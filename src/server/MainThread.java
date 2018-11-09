@@ -51,7 +51,7 @@ public class MainThread implements Runnable {
 		}
 	}
 	
-	private void logIn() {
+	private void logIn(String id, String password) {
 		// TODO: make log-in operation
 	}
 	
