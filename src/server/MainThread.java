@@ -51,8 +51,12 @@ public class MainThread implements Runnable {
 		}
 	}
 	
-	private void logIn(String id, String password) {
+	private bool logIn(String id, String password) {
+		bool success = false;
+		
 		// TODO: make log-in operation
+		
+		return success;
 	}
 	
 	private int timeToPoint(int time) {
