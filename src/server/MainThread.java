@@ -51,8 +51,8 @@ public class MainThread implements Runnable {
 		}
 	}
 	
-	private bool logIn(String id, String password) {
-		bool success = false;
+	private boolean logIn(String id, String password) {
+		boolean success = false;
 		
 		// TODO: make log-in operation
 		
