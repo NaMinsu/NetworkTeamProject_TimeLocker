@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class MainThread implements Runnable {
 	Socket cSocket;
+	Connection dbcon;
 	
 	public MainThread(Socket connection) {
 		cSocket = connection;
@@ -26,6 +27,7 @@ public class MainThread implements Runnable {
 				String url = "jdbc:mysql://localhost/timeLocker_DB";
 				String user = "root", password = "";
 				con = DriverManager.getConnection(url, user, password);
+				dbcon = con;
 				System.out.println(con);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -35,6 +37,25 @@ public class MainThread implements Runnable {
 		
 			// main operation
 			// TODO: make main operation of all function
+			char flag = inputData.charAt(0);
+			int dataNum = Integer.parseInt(inputData.substring(1, 2));
+			
+			switch (flag) {
+			case 'a': // Login Operation
+				String id, psw;
+				int operatorIndex = inputData.indexOf('|');
+				id = inputData.substring(2, operatorIndex);
+				psw = inputData.substring(operatorIndex + 1);
+				boolean result = logIn(id, psw);
+				if (result)
+					outputData = "log-in success.";
+				else
+					outputData = "log-in fail.";
+				break;
+			// TODO: make another operation code
+			default:
+				outputData = "This option is unavailable.";
+			}
 		
 			// close database
 			try {
@@ -54,7 +75,20 @@ public class MainThread implements Runnable {
 	private boolean logIn(String id, String password) {
 		boolean success = false;
 		
-		// TODO: make log-in operation
+		try {
+		Statement stmt = dbcon.createStatement();
+		ResultSet rs = null;
+		
+		String sql = "select ID, PASSWORD from USERS where "
+				+ "ID = '" + id + "' and password = '" + password + "'";
+		rs = stmt.executeQuery(sql);
+		rs.last();
+		int count = rs.getRow();
+		if (count == 1)
+			success = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return success;
 	}
