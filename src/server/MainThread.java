@@ -131,6 +131,9 @@ public class MainThread implements Runnable {
 		try {
 			Statement stmt = dbcon.createStatement();
 			String update = "update REGISTERED set POINT ";
+			String sql = "";
+			rs = stmt.executeQuery(sql);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -143,6 +146,9 @@ public class MainThread implements Runnable {
 		try {
 			Statement stmt = dbcon.createStatement();
 			String update = "update REGISTERED set LEFTTIME ";
+			String sql = "";
+			rs = stmt.executeQuery(sql);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
