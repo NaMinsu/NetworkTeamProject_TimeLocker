@@ -5,6 +5,9 @@ import java.sql.*;
 public class MainThread implements Runnable {
 	Socket cSocket;
 	Connection dbcon;
+	BufferedReader inFromClient;
+	DataOutputStream outToClient;
+	String inputData, outputData;
 	
 	public MainThread(Socket connection) {
 		cSocket = connection;
@@ -12,12 +15,12 @@ public class MainThread implements Runnable {
 	
 	@Override
 	public void run() {
-		String inputData, outputData = null;
+		outputData = null;
 		
 		try {
 			// read data
-			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
-			DataOutputStream outToClient = new DataOutputStream(cSocket.getOutputStream());
+			inFromClient = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
+			outToClient = new DataOutputStream(cSocket.getOutputStream());
 			inputData = inFromClient.readLine();
 			
 			// open database
@@ -26,8 +29,7 @@ public class MainThread implements Runnable {
 				Class.forName("com.mysql.jdbc.Driver");
 				String url = "jdbc:mysql://localhost/timeLocker_DB";
 				String user = "root", password = "";
-				con = DriverManager.getConnection(url, user, password);
-				dbcon = con;
+				dbcon = DriverManager.getConnection(url, user, password);
 				System.out.println(con);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -39,6 +41,8 @@ public class MainThread implements Runnable {
 			// TODO: make main operation of all function
 			char flag = inputData.charAt(0);
 			int dataNum = Integer.parseInt(inputData.substring(1, 2));
+			int operatorIndex;
+			String accessID;
 			
 			switch (flag) {
 			case 'a': // Login Operation
@@ -47,33 +51,59 @@ public class MainThread implements Runnable {
 				id = inputData.substring(2, operatorIndex);
 				psw = inputData.substring(operatorIndex + 1);
 				boolean result = logIn(id, psw);
+				// If login success, send id to client
 				if (result)
-					outputData = "log-in success.";
+					outputData = id;
+				// If fail, send fail string to client
 				else
 					outputData = "log-in fail.";
+				outToClient.writeBytes(outputData);
+			case 'b': // search operation
+				String[] address = new String[dataNum - 1];
+				int[] operatorIndices = new int[dataNum - 1];
+				operatorIndices[0] = inputData.indexOf('|');
+				for (int i = 1; i < dataNum - 1; i++)
+					operatorIndices[i] = inputData.substring(operatorIndices[i-1]).indexOf('|');
+				accessID = inputData.substring(2, operatorIndices[0]);
+				for (int i = 0; i < dataNum - 3; i++)
+					address[i] = inputData.substring(operatorIndices[i] + 1, operatorIndices[i+1]);
+				address[3] = inputData.substring(operatorIndices[dataNum - 2]);
+				searchPCRoomList(accessID, address);
 				break;
-			// TODO: make another operation code
+			case 'c': // exchange operation (point to time)
+				operatorIndex = inputData.indexOf('|');
+				accessID = inputData.substring(2, operatorIndex);
+				int exchangePoint = Integer.parseInt(inputData.substring(operatorIndex + 1));
+				pointToTime(accessID, exchangePoint);
+				break;
+			case 'd': // exchange operation (time to point)
+				
+				// TODO: make exchanging algorithm (time to point)
+				
+				break;
 			default:
 				outputData = "This option is unavailable.";
+				outToClient.writeBytes(outputData);
 			}
 		
 			// close database
 			try {
-				if (con != null && !con.isClosed())
+				if (dbcon != null && !dbcon.isClosed())
 					con.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			// write output
-			outToClient.writeBytes(outputData);
 			cSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/* parameter: String id, String password
+	 * operation: check login information
+	 * return: true if login success */
 	private boolean logIn(String id, String password) {
-		boolean success = false;
+		boolean isSuccess = false;
 		
 		try {
 		Statement stmt = dbcon.createStatement();
@@ -85,35 +115,72 @@ public class MainThread implements Runnable {
 		rs.last();
 		int count = rs.getRow();
 		if (count == 1)
-			success = true;
+			isSuccess = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return success;
+		return isSuccess;
 	}
 	
-	private int timeToPoint(int time) {
-		int point = 0;
+	private void timeToPoint(String aid, int time) {
+		int exchangeFee;
+		int plusPoint;
 		
 		// TODO: make change time to point operation
-		
-		return point;
+		try {
+			Statement stmt = dbcon.createStatement();
+			String update = "update REGISTERED set POINT ";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private int pointToTime(int point) {
-		int time = 0;
+	private void pointToTime(String aid, int point) {
+		int plusTime;
 		
 		// TODO: make change point to time operation
+		try {
+			Statement stmt = dbcon.createStatement();
+			String update = "update REGISTERED set LEFTTIME ";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		return time;
 	}
 	
-	private String[] searchPCRoomList(String[] address) {
-		String[] list = null;
+	private void searchPCRoomList(String aid, String[] address) {
 		
 		// TODO: make search PCRoom by address operation
-		
-		return list;
+		try {
+			Statement stmt = dbcon.createStatement();
+			ResultSet rs = null;
+			
+			String[] Acon = new String[4];
+			Acon[0] = "DO = '" + address[0] + "'";
+			Acon[1] = "SI = '" + address[1] + "'";
+			Acon[2] = "GU = '" + address[2] + "'";
+			Acon[3] = "DONG = '" + address[3] + "'";
+			String condition = Acon[0] + " and " + Acon[1] + " and "
+					+ Acon[2] + " and " + Acon[3];
+			String sql = "select NAME, LEFTTIME, POINT from PCROOM natural join "
+					+ "(select PCR_ID, LEFTTIME, POINT from REGISTERED"
+					+ " where USER_ID = '" + aid + "') where " + condition;
+			rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				String name = rs.getString(1);
+				int leftTime = rs.getInt(2);
+				int point = rs.getInt(3);
+				
+				outputData = name + "\t" + leftTime + "\t" + point +"\n";
+				outToClient.writeBytes(outputData);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
