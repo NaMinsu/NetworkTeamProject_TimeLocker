@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class ChangePoint extends JFrame
+public class ChangePointPanel extends JFrame
 {
 	private JTable dataset;
    /**
@@ -19,7 +19,7 @@ public class ChangePoint extends JFrame
       EventQueue.invokeLater(new Runnable() {
          public void run() {
             try {
-            	ChangePoint frame = new ChangePoint();
+            	ChangePointPanel frame = new ChangePointPanel();
                frame.setVisible(true);
             } catch (Exception e) {
                e.printStackTrace();
@@ -31,7 +31,7 @@ public class ChangePoint extends JFrame
    /**
     * Create the frame.
     */
-   public ChangePoint() 
+   public ChangePointPanel() 
    {
       setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\WORK\\\uAC00\uCC9C\uB300\uD559\uAD50\\2-2\\\uCEF4\uD4E8\uD130\uB124\uD2B8\uC6CC\uD06C \uBC0F \uC2E4\uC2B5(\uC774\uC8FC\uD615 \uAD50\uC218\uB2D8)\\Team Project\\Term project\\icon\\point.png"));
       setTitle("TimeLocker");
