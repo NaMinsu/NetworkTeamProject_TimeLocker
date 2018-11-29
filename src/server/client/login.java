@@ -84,9 +84,9 @@ public class login extends JFrame implements ActionListener
     else
      isLogin = false;
     if (isLogin) {
-     loginText.setText("로그인되었습니다.");
+     loginText.setText("hh.");
     } else {
-     loginText.setText("ID 또는 password가 잘못.");
+     loginText.setText("g");
     }
    } catch (Exception e1) {
     System.out.println("false");
