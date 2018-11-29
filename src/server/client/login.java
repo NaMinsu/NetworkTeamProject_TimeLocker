@@ -17,6 +17,7 @@ import java.awt.SystemColor;
 import java.awt.Font;
 //import com.sun.prism.paint.Color;
 
+
 public class login extends JFrame implements ActionListener 
 {
  private String id = "hong";
@@ -85,7 +86,7 @@ public class login extends JFrame implements ActionListener
     if (isLogin) {
      loginText.setText("로그인되었습니다.");
     } else {
-     loginText.setText("ID 또는 password가 잘못되었습니다.");
+     loginText.setText("ID 또는 password가 잘못.");
     }
    } catch (Exception e1) {
     System.out.println("false");
@@ -100,8 +101,4 @@ public class login extends JFrame implements ActionListener
   login my = new login();
  }
 } 
-
-
-
-
 
