@@ -6,13 +6,6 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +16,7 @@ import javax.swing.UIManager;
 import java.awt.SystemColor;
 import java.awt.Font;
 //import com.sun.prism.paint.Color;
+
 
 
 public class login extends JFrame implements ActionListener 
@@ -40,6 +34,7 @@ public class login extends JFrame implements ActionListener
   idPanel.setForeground(UIManager.getColor("Button.disabledText"));
   idPanel.setBackground(SystemColor.window);
   JPanel passPanel = new JPanel();
+  passPanel.setForeground(UIManager.getColor("ToolTip.background"));
   tf = new JTextField(12);
   pf = new JPasswordField(10);
   //loginText.setBackground(Color.RED);
@@ -91,9 +86,9 @@ public class login extends JFrame implements ActionListener
     else
      isLogin = false;
     if (isLogin) {
-     loginText.setText("hh.");
+     loginText.setText("로그인되었습니다.");
     } else {
-     loginText.setText("g");
+     loginText.setText("ID 또는 password가 잘못되었습니다.");
     }
    } catch (Exception e1) {
     System.out.println("false");
@@ -102,32 +97,14 @@ public class login extends JFrame implements ActionListener
  }
 
  
- public static void main(String[] args)throws IOException
+ public static void main(String[] args)
  {
   // TODO Auto-generated method stub
-    login my = new login();
-    
-	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-	Socket sock = null; // 접속할 소켓
-	DataInputStream read; // READ 스트림
-	DataOutputStream write; // WRITE 스트림
-
-	String send_str = "", recv_str = ""; // 서버에게 보낼 문자열
-
-	try {
-		sock = new Socket("127.0.0.1", 60000); //일단은 그냥 나랑 연결하게 
-
-		// 소켓과 스트림결합
-		read = new DataInputStream(sock.getInputStream()); // READ STREAM 연결
-		write = new DataOutputStream(sock.getOutputStream()); // WRITE STREAM 연결
-
-		System.out.println("*************** 접속성공! ***************");
-		System.out.println("********* quit, exit 입력시 종료 ********");
-
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+  login my = new login();
  }
 } 
+
+
+
+
 
