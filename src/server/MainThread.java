@@ -13,9 +13,11 @@ public class MainThread implements Runnable {
 		cSocket = connection;
 	}
 	
+	
 	@Override
 	public void run() {
 		outputData = null;
+		
 		
 		try {
 			// read data
@@ -47,9 +49,9 @@ public class MainThread implements Runnable {
 			switch (flag) {
 			case 'a': // Login Operation
 				String id, psw;
-				int operatorIndex = inputData.indexOf('|');
-				id = inputData.substring(2, operatorIndex);
-				psw = inputData.substring(operatorIndex + 1);
+				int operatorIndex1 = inputData.indexOf('|');
+				id = inputData.substring(2, operatorIndex1);
+				psw = inputData.substring(operatorIndex1 + 1);
 				boolean result = logIn(id, psw);
 				// If login success, send id to client
 				if (result)
@@ -71,9 +73,9 @@ public class MainThread implements Runnable {
 				searchPCRoomList(accessID, address);
 				break;
 			case 'c': // exchange operation (point to time)
-				operatorIndex = inputData.indexOf('|');
-				accessID = inputData.substring(2, operatorIndex);
-				int exchangePoint = Integer.parseInt(inputData.substring(operatorIndex + 1));
+				operatorIndex1 = inputData.indexOf('|');
+				accessID = inputData.substring(2, operatorIndex1);
+				int exchangePoint = Integer.parseInt(inputData.substring(operatorIndex1 + 1));
 				pointToTime(accessID, exchangePoint);
 				break;
 			case 'd': // exchange operation (time to point)
@@ -132,7 +134,7 @@ public class MainThread implements Runnable {
 			Statement stmt = dbcon.createStatement();
 			String update = "update REGISTERED set POINT ";
 			String sql = "";
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -147,7 +149,7 @@ public class MainThread implements Runnable {
 			Statement stmt = dbcon.createStatement();
 			String update = "update REGISTERED set LEFTTIME ";
 			String sql = "";
-			rs = stmt.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -161,6 +163,7 @@ public class MainThread implements Runnable {
 		try {
 			Statement stmt = dbcon.createStatement();
 			ResultSet rs = null;
+			
 			
 			String[] Acon = new String[4];
 			Acon[0] = "DO = '" + address[0] + "'";

@@ -17,8 +17,6 @@ import java.awt.SystemColor;
 import java.awt.Font;
 //import com.sun.prism.paint.Color;
 
-
-
 public class login extends JFrame implements ActionListener 
 {
  private String id = "hong";
