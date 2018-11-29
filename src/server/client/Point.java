@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class PersonalData extends JFrame
+public class Point extends JFrame
 {
 	private JTable dataset;
    /**
@@ -32,7 +32,7 @@ public class PersonalData extends JFrame
       EventQueue.invokeLater(new Runnable() {
          public void run() {
             try {
-            	PersonalData frame = new PersonalData();
+            	Point frame = new Point();
                frame.setVisible(true);
             } catch (Exception e) {
                e.printStackTrace();
@@ -44,7 +44,7 @@ public class PersonalData extends JFrame
    /**
     * Create the frame.
     */
-   public PersonalData() {
+   public Point() {
       setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\WORK\\\uAC00\uCC9C\uB300\uD559\uAD50\\2-2\\\uCEF4\uD4E8\uD130\uB124\uD2B8\uC6CC\uD06C \uBC0F \uC2E4\uC2B5(\uC774\uC8FC\uD615 \uAD50\uC218\uB2D8)\\Team Project\\Term project\\icon\\point.png"));
       setTitle("TimeLocker");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
