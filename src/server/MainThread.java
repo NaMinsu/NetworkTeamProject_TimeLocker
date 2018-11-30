@@ -148,8 +148,12 @@ public class MainThread implements Runnable {
 		try {
 			Statement stmt = dbcon.createStatement();
 			String update = "update REGISTERED set LEFTTIME ";
-			String sql = "";
+			String sql = "select LEFTTIME, LEFTPOINT from REGISTERD where USER_ID = '" + aid + "'");
 			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				int leftTime = getInt(0);
+				int leftPoint = getInt(1);
+			}j
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
