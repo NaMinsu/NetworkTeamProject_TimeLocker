@@ -21,10 +21,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
 
 public class PointPanel extends JFrame
 {
-	private JTable dataset;
 	/**
 	 * Launch the application.
 	 */
@@ -54,10 +54,64 @@ public class PointPanel extends JFrame
 		getContentPane().setLayout(null);
 
 		JPanel MyPoint = new JPanel();
-		MyPoint.setBackground(new Color(119, 136, 153));
+		MyPoint.setBackground(Color.WHITE);
 		MyPoint.setBounds(0, 0, 444, 401);
 		getContentPane().add(MyPoint);
 		MyPoint.setLayout(null);
+		
+		//Table 생성.
+		String[] PC = {"PC Room", "Remain Time"};
+		Object data[][] = {
+		};
+		
+		JTable dataset = new JTable(data,PC);
+		dataset.setCellSelectionEnabled(true);
+		dataset.setFillsViewportHeight(true);
+		dataset.setEnabled(false);
+		dataset.setColumnSelectionAllowed(true);
+		dataset.setToolTipText("\r\n");
+		dataset.setForeground(Color.BLACK);
+		dataset.setBackground(Color.LIGHT_GRAY);
+		dataset.setModel(new DefaultTableModel(
+			new Object[][] {	//받은 데이터들을 이곳에 넣어줘야함.
+				{"Z PC", new Double(1.13)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agsdv", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"mgn", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"45ut", new Double(2.53)},
+				{"agesd", new Double(6.53)},
+				{"agesd", new Double(2.53)},
+				{"bgfhd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.35)},
+				{"hgfsg", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(6.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"hrngf", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(10.53)},
+				{"agesd", new Double(2.53)},
+				{"jdfsdgf", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+				{"agesd", new Double(2.53)},
+			},
+			new String[] {
+				"PC Room", "Remain Time"
+			}
+		));
+		JScrollPane scrollPane = new JScrollPane(dataset);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(6, 38, 302, 200);
+		MyPoint.add(scrollPane);
 
 		JLabel lblMyPoint = new JLabel("My Point");
 		lblMyPoint.setFont(new Font("Arial Black", Font.PLAIN, 15));
@@ -71,23 +125,5 @@ public class PointPanel extends JFrame
 		JButton UsePoint = new JButton("Use the Point");
 		UsePoint.setBounds(314, 368, 118, 23);
 		MyPoint.add(UsePoint);
-
-		dataset = new JTable();
-		dataset.setBackground(new Color(105, 105, 105));
-		dataset.setModel(new DefaultTableModel(
-				new Object[][] {
-					{"3POP", "01:40"},
-					{"Z", "8:10"},
-					{"Gold Crown", "00:08"},
-					{null, null},
-					{null, null},
-				},
-				new String[] {
-						"PC Room", "Remain Time"
-				}
-				));
-		dataset.setBounds(12, 356, 420, -318);
-		MyPoint.add(dataset);
-
 	}
 }

@@ -21,6 +21,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 
 public class SearchPCRoomPanel extends JFrame
 {
@@ -59,14 +61,29 @@ public class SearchPCRoomPanel extends JFrame
 		getContentPane().add(Search);
 		Search.setLayout(null);
 
-		JLabel lblSearchPcRoom = new JLabel("Search PC Room Page");
-		lblSearchPcRoom.setFont(new Font("Arial Black", Font.PLAIN, 15));
-		lblSearchPcRoom.setBounds(12, 10, 203, 18);
-		Search.add(lblSearchPcRoom);
-
 		JTree tree = new JTree();
+		tree.setForeground(Color.LIGHT_GRAY);
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("전국");
+		DefaultMutableTreeNode tree1 = new DefaultMutableTreeNode("서울");
+		root.add(tree1);
+		DefaultMutableTreeNode leaf1 = new DefaultMutableTreeNode("서울전체");
+		DefaultMutableTreeNode leaf2 = new DefaultMutableTreeNode("강남구");
+		tree1.add(leaf1);
+		tree1.add(leaf2);
+		DefaultMutableTreeNode tree2 = new DefaultMutableTreeNode("경기");
+		root.add(tree2);
+		DefaultMutableTreeNode leaf3 = new DefaultMutableTreeNode("경기전체");
+		DefaultMutableTreeNode leaf4 = new DefaultMutableTreeNode("가평군");
+		tree2.add(leaf3);
+		tree2.add(leaf4);
+	
+
+		tree.setBounds(12, 62, 418, 16);
+		Search.add(tree);
+		/* --> 검사중
 		tree.setModel(new DefaultTreeModel(
-				new DefaultMutableTreeNode("전국") {
+				new DefaultMutableTreeNode("전국") 
+				{
 					{
 						DefaultMutableTreeNode node_1;
 						node_1 = new DefaultMutableTreeNode("서울");
@@ -158,8 +175,17 @@ public class SearchPCRoomPanel extends JFrame
 					}
 				}
 				));
-		tree.setBounds(12, 38, 420, 152);
-		Search.add(tree);
+				*/
+
+		JScrollPane scrollPane = new JScrollPane(tree);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(6, 38, 426, 266);
+		Search.add(scrollPane);
+
+		JLabel lblSearchPcRoom = new JLabel("Search PC Room Page");
+		lblSearchPcRoom.setFont(new Font("Arial Black", Font.PLAIN, 15));
+		lblSearchPcRoom.setBounds(12, 10, 203, 18);
+		Search.add(lblSearchPcRoom);
 
 
 
