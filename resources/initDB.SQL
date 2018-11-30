@@ -28,7 +28,7 @@ LEFTTIME INT DEFAULT 0
 POINT INT DEFAULT 0);
 
 # TODO - Insert 20 PCROOM
-INSERT INTO PCROOM VALUES();                 
+//INSERT INTO PCROOM VALUES();                 
 INSERT INTO PCROOM VALUES(1, 'Arena', 1, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(2, 'Gold crown', 2, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(3, 'Centro', 3, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
@@ -51,7 +51,7 @@ INSERT INTO PCROOM VALUES(19, 'LEO', 19, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seo
 INSERT INTO PCROOM VALUES(20, 'Uni Net', 20, 'Gyeonggi',	'Seongnam',	'Bundang', 'Seohyeon', 0);
                        
 # TODO - Insert 5 USER info
-INSERT INTO USER VALUES();
+//INSERT INTO USER VALUES();
 INSERT INTO USER VALUES('201735824', '12345a', '나민수', 1, 01011111111);
 INSERT INTO USER VALUES('201735830', '12345b', '박서연', 1, 01022222222);
 INSERT INTO USER VALUES('201433709', '12345c', '전성욱', 1, 01045357713);                 
@@ -59,7 +59,7 @@ INSERT INTO USER VALUES('201631961', '12345d', '홍교연', 1, 01044444444);
 INSERT INTO USER VALUES('201433702', '12345e', '이세진', 1, 01085299659);
                  
 # TODO - Insert each user registerd 3 PCROOM
-INSERT INTO REGISTERED VALUES();                 
+//INSERT INTO REGISTERED VALUES();                 
 INSERT INTO REGISTERED VALUES(1, '201735824', 0, 0);
 INSERT INTO REGISTERED VALUES(2, '201735830', 0, 0);
 INSERT INTO REGISTERED VALUES(3, '201433709', 0, 0);
