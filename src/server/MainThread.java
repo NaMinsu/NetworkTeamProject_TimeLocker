@@ -153,7 +153,7 @@ public class MainThread implements Runnable {
 			while(rs.next()) {
 				int leftTime = getInt(0);
 				int leftPoint = getInt(1);
-			}j
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
