@@ -13,11 +13,9 @@ public class MainThread implements Runnable {
 		cSocket = connection;
 	}
 	
-	
 	@Override
 	public void run() {
 		outputData = null;
-		
 		
 		try {
 			// read data
