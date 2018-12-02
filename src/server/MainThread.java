@@ -38,7 +38,6 @@ public class MainThread implements Runnable {
 			}
 		
 			// main operation
-			// TODO: make main operation of all function
 			char flag = inputData.charAt(0);
 			int dataNum = Integer.parseInt(inputData.substring(1, 2));
 			int operatorIndex;
