@@ -45,6 +45,8 @@ public class MainThread implements Runnable {
 			int dataNum = Integer.parseInt(inputData.substring(1, 2));
 			int operatorIndex;
 			String accessID;
+			String[] pcrNames;
+			int k, workload;
 			
 			switch (flag) {
 			case 'a': // Login Operation
@@ -53,6 +55,7 @@ public class MainThread implements Runnable {
 				id = inputData.substring(2, operatorIndex1);
 				psw = inputData.substring(operatorIndex1 + 1);
 				boolean result = logIn(id, psw);
+					
 				// If login success, send id to client
 				if (result)
 					outputData = id;
@@ -73,15 +76,41 @@ public class MainThread implements Runnable {
 				searchPCRoomList(accessID, address);
 				break;
 			case 'c': // exchange operation (point to time)
-				operatorIndex1 = inputData.indexOf('|');
-				accessID = inputData.substring(2, operatorIndex1);
-				int exchangePoint = Integer.parseInt(inputData.substring(operatorIndex1 + 1));
-				pointToTime(accessID, exchangePoint);
+				workload = (dataNum - 2) / 2;
+				pcrNames = new String[workload];
+				int[] points = new int[workload];
+				k = 1;
+				operatorIndices = new int[dataNum - 1];
+				for (int i = 1; i < dataNum - 1; i++)
+					operatorIndices[i] = inputData.substring(operatorIndices[i-1]).indexOf('|');
+				accessID = inputData.substring(2, operatorIndices[0]);
+				String targetName = inputData.substring(operatorIndices[0] + 1, operatorIndices[1]);
+				for (int i = 0; i < workload; i++) {
+					pcrNames[i] = inputData.substring(operatorIndices[k] + 1, operatorIndices[k + 1]);
+					k++;
+					points[i] = Integer.parseInt(inputData.substring(operatorIndices[k] + 1, operatorIndices[k + 1]));
+					k++;
+				}
+				pointToTime(accessID, targetName, pcrNames, points);
+				outToClient.writeBytes(outputData);
 				break;
 			case 'd': // exchange operation (time to point)
-				
-				// TODO: make exchanging algorithm (time to point)
-				
+				workload = (dataNum - 1) / 2;
+				pcrNames = new String[workload];
+				int[] times = new int[workload];
+				k = 0;
+				operatorIndices = new int[dataNum - 1];
+				for (int i = 1; i < dataNum - 1; i++)
+					operatorIndices[i] = inputData.substring(operatorIndices[i-1]).indexOf('|');
+				accessID = inputData.substring(2, operatorIndices[0]);
+				for (int i = 0; i < workload; i++) {
+					pcrNames[i] = inputData.substring(operatorIndices[k] + 1, operatorIndices[k + 1]);
+					k++;
+					times[i] = Integer.parseInt(inputData.substring(operatorIndices[k] + 1, operatorIndices[k + 1]));
+					k++;
+				}
+				timeToPoint(accessID, pcrNames, times);
+				outToClient.writeBytes(outputData);
 				break;
 			default:
 				outputData = "This option is unavailable.";
@@ -101,7 +130,8 @@ public class MainThread implements Runnable {
 		}
 	}
 	
-	/* parameter: String id, String password
+	/* protocol code: a
+	 * parameter: String id, String password
 	 * operation: check login information
 	 * return: true if login success */
 	private boolean logIn(String id, String password) {
@@ -125,42 +155,99 @@ public class MainThread implements Runnable {
 		return isSuccess;
 	}
 	
+	/* protocol code: d
+	 * parameter: id, pcroom names, times
+	 * operation: exchange time to point 
+	 * return: String success if operation success */
 	private void timeToPoint(String aid, int time) {
 		int exchangeFee;
 		int plusPoint;
 		
 		// TODO: make change time to point operation
 		try {
-			Statement stmt = dbcon.createStatement();
-			String update = "update REGISTERED set POINT ";
-			String sql = "";
-			ResultSet rs = stmt.executeQuery(sql);
-			
+			for (int i = 0; i < times.length; i++) {
+				int pcr_id = 0;
+				plusPoint = times[i];
+				stmt = dbcon.createStatement();
+				String sql = "select ID from PCROOM where NAME = '"
+						+ pcNames[i] + "'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next())
+					pcr_id = rs.getInt(1);
+				
+				stmt = dbcon.createStatement();
+				String update = "update REGISTERED set LEFTTIME = LEFTTIME - "
+						+ times[i] + " where PCR_ID = " + pcr_id
+						+ "and USER_ID = '" + aid + "'";
+				stmt.executeUpdate(update);
+				
+				stmt = dbcon.createStatement();
+				update = "update REGISTERED set POINT = POINT + " + plusPoint
+						+ " where PCR_ID = " + pcr_id
+						+ "and USER_ID = '" + aid + "'";
+				int count = stmt.executeUpdate(update);
+				if (count == 1)
+					outputData = "success";
+				else
+					outputData = "fail";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/* protocol code: c
+	 * parameter: id, target pcroom name, source pcroom names, points
+	 * operation: exchange points to time of target pcroom 
+	 * return: String success if update succress */	
 	private void pointToTime(String aid, int point) {
-		int plusTime;
+		int target_id = 0;
+		int[] source_id = new int[points.length];
+		int plusTime = 0;
+		for (int i = 0; i < points.length; i++)
+			plusTime += points[i] - feePolicy(pcrNames[i]);
 		
-		// TODO: make change point to time operation
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
-			Statement stmt = dbcon.createStatement();
-			String update = "update REGISTERED set LEFTTIME ";
-			String sql = "select LEFTTIME, LEFTPOINT from REGISTERD where USER_ID = '" + aid + "'");
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next()) {
-				int leftTime = getInt(0);
-				int leftPoint = getInt(1);
+			stmt = dbcon.createStatement();
+			String sql = "select ID from PCROOM where NAME = '" + target + "'";
+			rs = stmt.executeQuery(sql);
+			if (rs.next())
+				target_id = rs.getInt(1);
+			
+			for (int i = 0; i < points.length; i++) {
+				stmt = dbcon.createStatement();
+				sql = "select ID from PCROOM where NAME = '" + pcrNames[i] +"'";
+				rs = stmt.executeQuery(sql);
+				if (rs.next())
+					source_id[i] = rs.getInt(1);
+				
+				stmt = dbcon.createStatement();
+				String update = "update REGISTERED set POINT = POINT - "
+						+ points[i] + " where PCR_ID = " + source_id[i]
+						+ "and USER_ID = '" + aid + "'";
+				stmt.executeUpdate(update);
 			}
 			
+			stmt = dbcon.createStatement();
+			String update = "update REGISTERED set LEFTTIME = LEFTTIME + "
+					+ plusTime + " where PCR_ID = " + target_id
+					+ "and USER_ID = '" + aid + "'";
+			int count = stmt.executeUpdate(update);
+			if (count == 1)
+				outputData = "success";
+			else
+				outputData = "fail";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
+	/* protocol code: b
+	 * parameter: user id, address info
+	 * operation: search PCRoom info for user in specific area
+	 * return: array of PCRoom name, left time, point */	
 	private void searchPCRoomList(String aid, String[] address) {
 		
 		// TODO: make search PCRoom by address operation
@@ -195,5 +282,17 @@ public class MainThread implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+		
+	/* protocol code: none
+	 * parameter: pcroom name
+	 * operation: calculate fee by each pcroom
+	 * return: fee */
+	private int feePolicy(String pcrName) {
+		int fee = 0;
+		
+		// TODO: calculate fee by PCroom Name
+		
+		return fee;
 	}
 }
