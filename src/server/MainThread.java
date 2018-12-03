@@ -1,10 +1,12 @@
+package main;
+
 import java.io.*;
 import java.net.*;
 import java.sql.*;
 
 public class MainThread implements Runnable {
 	Socket cSocket;
-	Connection dbcon;
+	Connection dbcon = null;
 	BufferedReader inFromClient;
 	DataOutputStream outToClient;
 	String inputData, outputData;
@@ -24,13 +26,11 @@ public class MainThread implements Runnable {
 			inputData = inFromClient.readLine();
 			
 			// open database
-			Connection con = null;
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				String url = "jdbc:mysql://localhost/timeLocker_DB";
-				String user = "root", password = "";
+				String user = "root", password = "zmfhzjm0";
 				dbcon = DriverManager.getConnection(url, user, password);
-				System.out.println(con);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
@@ -41,18 +41,19 @@ public class MainThread implements Runnable {
 			char flag = inputData.charAt(0);
 			int dataNum = Integer.parseInt(inputData.substring(1, 2));
 			int operatorIndex;
+			int[] operatorIndices;
 			String accessID;
 			String[] pcrNames;
 			int k, workload;
 			
 			switch (flag) {
-			case 'a': // Login Operation
+			case 'a': // login operation
 				String id, psw;
-				int operatorIndex1 = inputData.indexOf('|');
-				id = inputData.substring(2, operatorIndex1);
-				psw = inputData.substring(operatorIndex1 + 1);
+				operatorIndex = inputData.indexOf('|');
+				id = inputData.substring(2, operatorIndex);
+				psw = inputData.substring(operatorIndex + 1);
 				boolean result = logIn(id, psw);
-					
+				
 				// If login success, send id to client
 				if (result)
 					outputData = id;
@@ -60,19 +61,20 @@ public class MainThread implements Runnable {
 				else
 					outputData = "log-in fail.";
 				outToClient.writeBytes(outputData);
+				break;
 			case 'b': // search operation
 				String[] address = new String[dataNum - 1];
-				int[] operatorIndices = new int[dataNum - 1];
+				operatorIndices = new int[dataNum - 1];
 				operatorIndices[0] = inputData.indexOf('|');
 				for (int i = 1; i < dataNum - 1; i++)
-					operatorIndices[i] = inputData.substring(operatorIndices[i-1]).indexOf('|');
+					operatorIndices[i] = inputData.substring(operatorIndices[i - 1]).indexOf('|');
 				accessID = inputData.substring(2, operatorIndices[0]);
 				for (int i = 0; i < dataNum - 3; i++)
-					address[i] = inputData.substring(operatorIndices[i] + 1, operatorIndices[i+1]);
+					address[i] = inputData.substring(operatorIndices[i] + 1, operatorIndices[i + 1]);
 				address[3] = inputData.substring(operatorIndices[dataNum - 2]);
 				searchPCRoomList(accessID, address);
 				break;
-			case 'c': // exchange operation (point to time)
+			case 'c': // exchange operation (point to time)			
 				workload = (dataNum - 2) / 2;
 				pcrNames = new String[workload];
 				int[] points = new int[workload];
@@ -117,7 +119,7 @@ public class MainThread implements Runnable {
 			// close database
 			try {
 				if (dbcon != null && !dbcon.isClosed())
-					con.close();
+					dbcon.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -157,10 +159,10 @@ public class MainThread implements Runnable {
 	 * operation: exchange time to point 
 	 * return: String success if operation success */
 	private void timeToPoint(String aid, String[] pcNames, int[] times) {
-		int exchangeFee;
-		int plusPoint;
+		int plusPoint = 0;
 		
-		// TODO: make change time to point operation
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 			for (int i = 0; i < times.length; i++) {
 				int pcr_id = 0;
@@ -187,6 +189,7 @@ public class MainThread implements Runnable {
 					outputData = "success";
 				else
 					outputData = "fail";
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -195,7 +198,7 @@ public class MainThread implements Runnable {
 	/* protocol code: c
 	 * parameter: id, target pcroom name, source pcroom names, points
 	 * operation: exchange points to time of target pcroom 
-	 * return: String success if update succress */	
+	 * return: String success if update succress */
 	private void pointToTime(String aid, String target, String[] pcrNames, int[] points) {
 		int target_id = 0;
 		int[] source_id = new int[points.length];
@@ -244,14 +247,12 @@ public class MainThread implements Runnable {
 	/* protocol code: b
 	 * parameter: user id, address info
 	 * operation: search PCRoom info for user in specific area
-	 * return: array of PCRoom name, left time, point */	
+	 * return: array of PCRoom name, left time, point */
 	private void searchPCRoomList(String aid, String[] address) {
 		
-		// TODO: make search PCRoom by address operation
 		try {
 			Statement stmt = dbcon.createStatement();
 			ResultSet rs = null;
-			
 			
 			String[] Acon = new String[4];
 			Acon[0] = "DO = '" + address[0] + "'";
@@ -280,7 +281,7 @@ public class MainThread implements Runnable {
 			e.printStackTrace();
 		}
 	}
-		
+	
 	/* protocol code: none
 	 * parameter: pcroom name
 	 * operation: calculate fee by each pcroom
