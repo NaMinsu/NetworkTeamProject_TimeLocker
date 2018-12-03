@@ -40,7 +40,7 @@ INSERT INTO PCROOM VALUES(8, 'Raitto', 8, 'Gyeonggi', 'Seongnam', 'Bundang', 'Se
 INSERT INTO PCROOM VALUES(9, 'Z', 9, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(10, 'Crowd', 10, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(11, 'Ready', 11, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(12, 'Joykan Seohyeon', 2, 12, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
+INSERT INTO PCROOM VALUES(12, 'Joykan Seohyeon', 12, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(13, 'Daily', 13, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(14, 'Chef', 13, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
 INSERT INTO PCROOM VALUES(15, 'SK', 15, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon',	0);
