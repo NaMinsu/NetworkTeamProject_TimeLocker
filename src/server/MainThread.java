@@ -156,7 +156,7 @@ public class MainThread implements Runnable {
 	 * parameter: id, pcroom names, times
 	 * operation: exchange time to point 
 	 * return: String success if operation success */
-	private void timeToPoint(String aid, int time) {
+	private void timeToPoint(String aid, String[] pcNames, int[] times) {
 		int exchangeFee;
 		int plusPoint;
 		
@@ -196,7 +196,7 @@ public class MainThread implements Runnable {
 	 * parameter: id, target pcroom name, source pcroom names, points
 	 * operation: exchange points to time of target pcroom 
 	 * return: String success if update succress */	
-	private void pointToTime(String aid, int point) {
+	private void pointToTime(String aid, String target, String[] pcrNames, int[] points) {
 		int target_id = 0;
 		int[] source_id = new int[points.length];
 		int plusTime = 0;
