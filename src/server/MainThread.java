@@ -284,10 +284,38 @@ public class MainThread implements Runnable {
 	 * parameter: pcroom name
 	 * operation: calculate fee by each pcroom
 	 * return: fee */
-	private int feePolicy(String pcrName) {
-		int fee = 0;
+	private double feePolicy(String pcrName, String targetName) {
+		double fee = 0;
+		double temp;
 		
-		// TODO: calculate fee by PCroom Name
+		int franchise_source, franchise_destination;
+		
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = dbcon.createStatement();
+			String sql = "select FRANCHISE from PCROOM where NAME = '"
+					+ pcrName + "'";
+			rs = stmt.executeQuery(sql);
+			franchise_source = rs.getInt(1);
+			
+			stmt = dbcon.createStatement();
+			sql = "select FRANCHISE from PCROOM where NAME = '"
+					+ targetName + "'";
+			rs = stmt.executeQuery(sql);
+			franchise_destination = rs.getInt(1);
+			
+			if (franchise_source != franchise_destination) {
+				stmt = dbcon.createStatement();
+				sql = "select FEE from PCROOM where FRANCHISE = "
+						+ franchise_destination;
+				rs = stmt.executeQuery(sql);
+				temp = rs.getDouble(1);
+				fee = temp / 100.0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return fee;
 	}
