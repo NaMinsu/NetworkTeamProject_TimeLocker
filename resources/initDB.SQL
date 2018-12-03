@@ -19,7 +19,7 @@ DO VARCHAR(20),
 SI VARCHAR(20),
 GU VARCHAR(20),
 DONG VARCHAR(20),
-FEE INT DEFAULT 0);
+FEE INT);
 
 CREATE TABLE REGISTERED (
 PCR_ID NUMERIC(8,0) REFERENCES PCROOM(ID),
@@ -29,26 +29,26 @@ LEFTPOINT INT DEFAULT 0);
 
 # TODO - Insert 20 PCROOM
 //INSERT INTO PCROOM VALUES();                 
-INSERT INTO PCROOM VALUES(1, 'Arena', 1, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(2, 'Gold crown', 2, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(3, 'Centro', 3, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(4, '3POP Dreamnet', 4, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(5, 'Top Place', 5, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(6, 'I Sense League', 6, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(7, 'Game Innus', 7, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(8, 'Raitto', 8, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(9, 'Z', 9, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(10, 'Crowd', 10, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(11, 'Ready', 11, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(12, 'Joykan Seohyeon', 12, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(13, 'Daily', 13, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(14, 'Chef', 13, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(15, 'SK', 15, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon',	0);
-INSERT INTO PCROOM VALUES(16, 'Gate Zero', 16, 'Gyeonggi',	'Seongnam',	'Bundang', 'Seohyeon', 0);                 
-INSERT INTO PCROOM VALUES(17, 'Lucipher', 17, 'Gyeonggi', 'Seongnam', 'Bundang',	'Seohyeon',	0);
-INSERT INTO PCROOM VALUES(18, 'Gallery', 18, 'Gyeonggi', 'Seongnam',	'Bundang', 'Seohyeon', 0);
-INSERT INTO PCROOM VALUES(19, 'LEO', 19, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 0);                 
-INSERT INTO PCROOM VALUES(20, 'Uni Net', 20, 'Gyeonggi',	'Seongnam',	'Bundang', 'Seohyeon', 0);
+INSERT INTO PCROOM VALUES(1, 'Arena', 1, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 1);
+INSERT INTO PCROOM VALUES(2, 'Gold crown', 2, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 2);
+INSERT INTO PCROOM VALUES(3, 'Centro', 3, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 3);
+INSERT INTO PCROOM VALUES(4, '3POP Dreamnet', 4, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 4);
+INSERT INTO PCROOM VALUES(5, 'Top Place', 5, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 5);
+INSERT INTO PCROOM VALUES(6, 'I Sense League', 6, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 6);
+INSERT INTO PCROOM VALUES(7, 'Game Innus', 7, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 7);
+INSERT INTO PCROOM VALUES(8, 'Raitto', 8, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 8);
+INSERT INTO PCROOM VALUES(9, 'Z', 9, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 9);
+INSERT INTO PCROOM VALUES(10, 'Crowd', 10, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 10);
+INSERT INTO PCROOM VALUES(11, 'Ready', 11, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 11);
+INSERT INTO PCROOM VALUES(12, 'Joykan Seohyeon', 12, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 12);
+INSERT INTO PCROOM VALUES(13, 'Daily', 13, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 13);
+INSERT INTO PCROOM VALUES(14, 'Chef', 13, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 14);
+INSERT INTO PCROOM VALUES(15, 'SK', 15, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon',	15);
+INSERT INTO PCROOM VALUES(16, 'Gate Zero', 16, 'Gyeonggi',	'Seongnam',	'Bundang', 'Seohyeon', 16);                 
+INSERT INTO PCROOM VALUES(17, 'Lucipher', 17, 'Gyeonggi', 'Seongnam', 'Bundang',	'Seohyeon',	17);
+INSERT INTO PCROOM VALUES(18, 'Gallery', 18, 'Gyeonggi', 'Seongnam',	'Bundang', 'Seohyeon', 18);
+INSERT INTO PCROOM VALUES(19, 'LEO', 19, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 19);                 
+INSERT INTO PCROOM VALUES(20, 'Uni Net', 20, 'Gyeonggi',	'Seongnam',	'Bundang', 'Seohyeon', 29);
                        
 # TODO - Insert 5 USER info
 //INSERT INTO USER VALUES();
