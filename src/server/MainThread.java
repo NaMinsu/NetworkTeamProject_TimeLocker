@@ -61,15 +61,8 @@ public class MainThread implements Runnable {
 				outToClient.writeBytes(outputData);
 				break;
 			case 'b': // search operation
-				String[] address = new String[dataNum - 1];
-				operatorIndices = new int[dataNum - 1];
-				operatorIndices[0] = inputData.indexOf('|');
-				for (int i = 1; i < dataNum - 1; i++)
-					operatorIndices[i] = inputData.substring(operatorIndices[i - 1]).indexOf('|');
-				accessID = inputData.substring(2, operatorIndices[0]);
-				for (int i = 0; i < dataNum - 3; i++)
-					address[i] = inputData.substring(operatorIndices[i] + 1, operatorIndices[i + 1]);
-				address[3] = inputData.substring(operatorIndices[dataNum - 2]);
+				operatorIndex = inputData.indexOf('|');
+				accessID = inputData.substring(operatorIndex);
 				searchPCRoomList(accessID, address);
 				break;
 			case 'c': // exchange operation (point to time)			
@@ -246,22 +239,14 @@ public class MainThread implements Runnable {
 	 * parameter: user id, address info
 	 * operation: search PCRoom info for user in specific area
 	 * return: array of PCRoom name, left time, point */
-	private void searchPCRoomList(String aid, String[] address) {
+	private void searchPCRoomList(String aid) {
 		
 		try {
 			Statement stmt = dbcon.createStatement();
 			ResultSet rs = null;
 			
-			String[] Acon = new String[4];
-			Acon[0] = "DO = '" + address[0] + "'";
-			Acon[1] = "SI = '" + address[1] + "'";
-			Acon[2] = "GU = '" + address[2] + "'";
-			Acon[3] = "DONG = '" + address[3] + "'";
-			String condition = Acon[0] + " and " + Acon[1] + " and "
-					+ Acon[2] + " and " + Acon[3];
 			String sql = "select NAME, LEFTTIME, POINT from PCROOM natural join "
-					+ "(select PCR_ID, LEFTTIME, POINT from REGISTERED"
-					+ " where USER_ID = '" + aid + "') where " + condition;
+					+ "REGISTERED where USER_ID = '" + aid + "'";
 			rs = stmt.executeQuery(sql);
 			
 			while (rs.next()) {
