@@ -49,7 +49,7 @@ INSERT INTO PCROOM VALUES(16, 'Gate Zero', 16, 'Gyeonggi',	'Seongnam',	'Bundang'
 INSERT INTO PCROOM VALUES(17, 'Lucipher', 17, 'Gyeonggi', 'Seongnam', 'Bundang',	'Seohyeon',	17);
 INSERT INTO PCROOM VALUES(18, 'Gallery', 18, 'Gyeonggi', 'Seongnam',	'Bundang', 'Seohyeon', 18);
 INSERT INTO PCROOM VALUES(19, 'LEO', 19, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 19);                 
-INSERT INTO PCROOM VALUES(20, 'Uni Net', 20, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 29);
+INSERT INTO PCROOM VALUES(20, 'Uni Net', 20, 'Gyeonggi', 'Seongnam', 'Bundang', 'Seohyeon', 20);
                        
 # TODO - Insert 5 USER info
 # INSERT INTO USERS VALUES();
