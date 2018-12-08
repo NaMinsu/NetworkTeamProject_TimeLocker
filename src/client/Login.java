@@ -1,5 +1,3 @@
-package main;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -19,68 +17,98 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+
+import java.awt.Component;
+
 
 public class Login extends JFrame
 {
-   private JTextField tf;
-   private JPasswordField pf;
+   public JTextField tf;
+   public JPasswordField pf;
    public static JButton loginButton;
    JLabel loginText = new JLabel();
-   private String protocol = "a2";
+   public String protocol = "a2";
    private static final String loginFail = "log-in fail.";
    private String accessID;
+   private boolean isLoggingOn = false;
+
 
    public Login() 
    {
-      JPanel idPanel = new JPanel();
-      idPanel.setForeground(UIManager.getColor("Button.disabledText"));
-      idPanel.setBackground(SystemColor.window);
-      JPanel passPanel = new JPanel();
-      passPanel.setForeground(UIManager.getColor("ToolTip.background"));
-      tf = new JTextField(12);
-      pf = new JPasswordField(10);
+   	getContentPane().setForeground(new Color(253, 245, 230));
+      //setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\WORK\\\uAC00\uCC9C\uB300\uD559\uAD50\\2-2\\\uCEF4\uD4E8\uD130\uB124\uD2B8\uC6CC\uD06C \uBC0F \uC2E4\uC2B5(\uC774\uC8FC\uD615 \uAD50\uC218\uB2D8)\\Team Project\\Term project\\icon\\point.png"));
+      setTitle("TimeLocker");
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setBounds(0, 0, 444, 401);   //size ÏàòÏ†ïÌï¥ÏïºÎê®.
+      setLocationRelativeTo(null);   //Ï∞ΩÏùÑ Í∞ÄÏö¥Îç∞Ïóê Îú®Í≤åÌï®.
+      //setResizable(false);   //sizeÎ≥ÄÍ≤ΩÌïòÏßÄ Î™ªÌïòÍ≤å Ìï®.
+      getContentPane().setLayout(null);
 
       Container contentPane = getContentPane(); 
-      contentPane.setBackground(Color.GRAY); 
-      contentPane.setLayout(new FlowLayout()); 
-
-      JLabel idLabel = new JLabel("ID : ");
-      idLabel.setFont(new Font("YuKyokasho Yoko", Font.PLAIN, 11));
-      JLabel passLabel = new JLabel("PASSWORD : ");
-      passLabel.setFont(new Font("YuKyokasho Yoko", Font.PLAIN, 11));
-      loginButton = new JButton("LOGIN");
-      loginButton.setFont(new Font("YuKyokasho Yoko", Font.PLAIN, 11));
-      loginButton.addActionListener(new ActionListener(){
-      @Override
-      public void actionPerformed(ActionEvent e) 
-      {
-         //PROTOCOL «’ƒ°¥¬ ∞˙¡§
-         String in = (tf.getText()).concat("|");
-         String pw = new String (pf.getPassword());
-         String info = in.concat(pw);
-
-         protocol = protocol.concat(info);
-         
-         socketStarting();
-      }});
-      idPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-      idPanel.add(idLabel);
+      contentPane.setBackground(new Color(255, 255, 255));
+      getContentPane().setLayout(null);
+      getContentPane().setLayout(null);
+      JPanel idPanel = new JPanel();
+      idPanel.setBounds(109, 131, 170, 39);
+      idPanel.setForeground(new Color(253, 245, 230));
+      idPanel.setBackground(new Color(255, 239, 213));
+      tf = new JTextField(12);
+      tf.setBounds(6, 6, 158, 26);
+      idPanel.setLayout(null);
       idPanel.add(tf);
-
-      passPanel.add(passLabel);
-      passPanel.add(pf);
-
+      
+      JLabel lblNewLabel = new JLabel("");
+      lblNewLabel.setBounds(155, 18, 97, 131);
+      getContentPane().add(lblNewLabel);
+      lblNewLabel.setIcon(new ImageIcon("sandglass.png"));
+      
       getContentPane().add(idPanel);
+      JPanel passPanel = new JPanel();
+      passPanel.setBounds(109, 174, 170, 39);
+      passPanel.setBackground(new Color(255, 239, 213));
+      passPanel.setForeground(UIManager.getColor("ToolTip.background"));
+      pf = new JPasswordField(12);
+      pf.setBounds(6, 6, 158, 27);
+      passPanel.setLayout(null);
+
+      passPanel.add(pf);
       getContentPane().add(passPanel);
+      loginButton = new JButton("LOGIN");
+      loginButton.setBackground(new Color(192, 192, 192));
+      loginButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+         }
+      });
+      loginButton.setBounds(155, 225, 81, 29);
+      loginButton.setFont(new Font("YuKyokasho Yoko", Font.PLAIN, 11));
+      loginButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
       getContentPane().add(loginButton);
+      loginText.setBounds(243, 70, 0, 0);
       getContentPane().add(loginText);
 
-      getContentPane().setLayout(new FlowLayout());
+      JLabel idLabel = new JLabel("ID : ");
+      getContentPane().add(idLabel);
+      idLabel.setBounds(76, 145, 30, 17);
+      idLabel.setFont(new Font("YuKyokasho Yoko", Font.PLAIN, 11));
+      JLabel passLabel = new JLabel("PW : ");
+      passLabel.setBounds(76, 184, 30, 17);
+      getContentPane().add(passLabel);
+      passLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+      passLabel.setFont(new Font("YuKyokasho Yoko", Font.PLAIN, 11));
+      
+      JLabel lblTimelocker = new JLabel("TimeLocker");
+      lblTimelocker.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
+      lblTimelocker.setBounds(141, 29, 105, 16);
+      getContentPane().add(lblTimelocker);
 
       setTitle("LOGIN");
-      setSize(300, 200);
+      setSize(400, 300);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
    }
@@ -95,6 +123,7 @@ public class Login extends JFrame
 
       try 
       {
+
          sock = new Socket("127.0.0.1", 777);
 
          read = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -102,25 +131,37 @@ public class Login extends JFrame
 
          System.out.println("*************** Connect Success ***************");       
 
-         // º≠πˆø°∞‘ πÆ¿⁄ø≠ ∞™¿ª ¿¸¥ﬁ«œ¥¬∞˙¡§
+
+         // ÏÑúÎ≤ÑÏóêÍ≤å Î¨∏ÏûêÏó¥ Í∞íÏùÑ Ï†ÑÎã¨ÌïòÎäîÍ≥ºÏ†ï
          write.writeBytes(protocol + "\n");
          recv_str = read.readLine();
-         
+
          if (recv_str.equals(loginFail)) {
-        	 tf.setText("");
-        	 pf.setText("");
-        	 return;
+
+            tf.setText("");
+            pf.setText("");
+            isLoggingOn = false;
+
+            return;
          }
-         else
-        	 accessID = recv_str;
+         else {
+            protocol="a2";
+            accessID = recv_str;
+            isLoggingOn = true;
+
+         }
       }
       catch (IOException e) 
       {
          e.printStackTrace();
       }
    }
-   
+
    public String getAccessID() {
-	   return accessID;
+      return accessID;
+   }
+
+   public boolean isLogIn() {
+      return isLoggingOn;
    }
 }
